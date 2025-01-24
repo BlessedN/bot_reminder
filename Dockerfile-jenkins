@@ -1,0 +1,7 @@
+FROM jenkins/jenkins:latest
+WORKDIR /app
+COPY . /app
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN jenkins-plugin-cli --plugins workflow-aggregator git
+EXPOSE 8080
+EXPOSE 50000

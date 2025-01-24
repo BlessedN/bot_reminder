@@ -1,0 +1,14 @@
+version: '3'
+services:
+  bot_reminder:
+    build:
+      context:
+        .
+    container_name: my_container
+    volumes:
+      - ./:/app
+    environment:
+      TELEGRAM_BOT_TOKEN: "7111576325:AAEQ6wXGmlnfg6GZzfooLiBN5PWv7S1V9tg"
+      DATABASE_PATH: "reminders.db"
+    command: python main.py
+
