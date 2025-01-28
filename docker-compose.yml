@@ -12,3 +12,37 @@ services:
       DATABASE_PATH: "reminders.db"
     command: python main.py
 
+  jenkins:
+    image: jenkins/jenkins:latest
+    container_name: jenkins-server
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - jenkins-network
+
+  jenkins-agent:
+    image: jenkins/inbound-agent
+    container_name: jenkins-agent
+    environment:
+      - JENKINS_URL=http://jenkins-server:8080
+      - JENKINS_AGENT_NAME=agent
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
+    volumes:
+      - agent_workdir:/home/jenkins/agent
+    depends_on:
+      - jenkins
+    networks:
+      - jenkins-network
+volumes:
+  jenkins_home:
+  agent_workdir:
+
+networks:
+  jenkins-network:
+
+
+# docker-compose up -d --build
+# docker-compose down
